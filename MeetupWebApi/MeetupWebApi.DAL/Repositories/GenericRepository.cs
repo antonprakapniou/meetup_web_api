@@ -8,6 +8,7 @@ namespace MeetupWebApi.DAL.Repositories
     public class GenericRepository<T>:IGenericRepository<T> where T : class
     {
         private readonly AppDbContext _context;
+
         internal DbSet<T> dbSet;
 
         public GenericRepository(AppDbContext context)
