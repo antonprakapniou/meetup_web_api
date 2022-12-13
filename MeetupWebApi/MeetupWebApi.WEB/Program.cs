@@ -1,4 +1,6 @@
 using MeetupWebApi.DAL.EF;
+using MeetupWebApi.DAL.Interfaces;
+using MeetupWebApi.DAL.Repositories;
 using MeetupWebApi.WEB.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -23,9 +25,13 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+builder.Services.AddTransient<IMeetupRepository, MeetupRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 

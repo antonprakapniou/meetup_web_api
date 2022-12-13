@@ -4,7 +4,7 @@ namespace MeetupWebApi.DAL.Interfaces
 {
     public interface IUnitOfWork:IDisposable
     {
-        public IGenericRepository<Meetup> MeetUpRepository { get; }
+        public IGenericRepository<Meetup> MeetupRepository { get; }
         public Task SaveChangesAsync();
     }
 }
