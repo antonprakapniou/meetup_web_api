@@ -28,7 +28,7 @@ namespace MeetupWebApi.DAL.Models
         [Required]
         public string? Adress { get; set; }
 
-        //use Utc for work with PostgreSQL 
+        //use converting to Utc for work with PostgreSQL 
         [Required]
         public DateTime? Spending { get; set; }
     }
