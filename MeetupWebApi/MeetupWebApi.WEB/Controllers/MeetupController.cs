@@ -121,7 +121,7 @@ namespace MeetupWebApi.WEB.Controllers
         }
 
         [HttpDelete]
-        public async Task<Results<NotFound<string>, Ok<MeetupDto>, BadRequest<string>, Conflict<string>>> DeleteMeetupAsync(MeetupDto meetupDto)
+        public async Task<Results<NotFound<string>, Ok<MeetupDto>, BadRequest<string>>> DeleteMeetupAsync(MeetupDto meetupDto)
         {
             try
             {

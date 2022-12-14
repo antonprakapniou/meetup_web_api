@@ -31,9 +31,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddAutoMapper(typeof(MeetupAutoMapperProfile));
-builder.Services.AddScoped<IMeetupService, MeetupService>();
+builder.Services.AddTransient<IMeetupService, MeetupService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IMeetupRepository, MeetupRepository>();
 builder.Services.AddValidatorsFromAssemblyContaining<MeetupDto>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

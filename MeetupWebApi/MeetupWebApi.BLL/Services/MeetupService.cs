@@ -30,7 +30,6 @@ namespace MeetupWebApi.BLL.Services
             _logger=logger;
         }
 
-        //possible null returning
         //throw NonExistentObjectException if meetup list is empty
         public async Task<IEnumerable<MeetupDto>> GetMeetupsAsync()
         {
@@ -46,7 +45,6 @@ namespace MeetupWebApi.BLL.Services
             return _mapper.Map<IEnumerable<MeetupDto>>(meetupDtos);
         }
 
-        //possible null returning
         //throw NonExistentObjectException if meetup doesn't exist
         public async Task<MeetupDto> GetMeetupByIdAsync(int id)
         {
@@ -67,6 +65,7 @@ namespace MeetupWebApi.BLL.Services
         }
 
         //throw NonExistentObjectException if meetup doesn't exist
+        //throw InvalidObjectException if meetupDto doesn't valid
         public async Task<MeetupDto> CreateMeetupAsync(MeetupDto meetupDto)
         {
             ValidationResult result=await _validator.ValidateAsync(meetupDto);
@@ -94,9 +93,13 @@ namespace MeetupWebApi.BLL.Services
         }
 
         //throw NonExistentObjectException if meetup doesn't exist
+        //throw InvalidObjectException if meetupDto doesn't valid
         public async Task<MeetupDto> UpdateMeetupAsync(MeetupDto meetupDto)
         {
-            if (_unitOfWork.MeetupRepository.GetByAsync(m => m.Id==meetupDto.Id)==null)
+            var meetupForUpdate = _mapper.Map<Meetup>(meetupDto);
+            var meetups = await _unitOfWork.MeetupRepository.GetByAsync(m => m.Id==meetupForUpdate.Id);
+
+            if (meetups.Count()==0)
             {
                 string errorMessage = $"Meetup with id = {meetupDto.Id} doesn't exist";
                 _logger.LogDebug(errorMessage);
@@ -107,8 +110,7 @@ namespace MeetupWebApi.BLL.Services
             {
                 ValidationResult result = await _validator.ValidateAsync(meetupDto);
                 if (result.IsValid)
-                {
-                    var meetupForUpdate = _mapper.Map<Meetup>(meetupDto);
+                {                   
                     _unitOfWork.MeetupRepository.Update(meetupForUpdate);
 
                     try
@@ -135,7 +137,10 @@ namespace MeetupWebApi.BLL.Services
         //throw NonExistentObjectException if meetup doesn't exist
         public async Task<MeetupDto> DeleteMeetupAsync(MeetupDto meetupDto)
         {
-            if (_unitOfWork.MeetupRepository.GetByAsync(m => m.Id==meetupDto.Id)==null)
+            var meetupForDelete = _mapper.Map<Meetup>(meetupDto);
+            var meetups = await _unitOfWork.MeetupRepository.GetByAsync(m => m.Id==meetupForDelete.Id);
+
+            if (meetups.Count()==0)
             {
                 string errorMessage = $"Meetup with id = {meetupDto.Id} doesn't exist";
                 _logger.LogDebug(errorMessage);
@@ -144,7 +149,6 @@ namespace MeetupWebApi.BLL.Services
 
             else
             {
-                var meetupForDelete = _mapper.Map<Meetup>(meetupDto);
                 _unitOfWork.MeetupRepository.Delete(meetupForDelete);
 
                 try

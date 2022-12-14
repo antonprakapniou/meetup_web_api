@@ -24,10 +24,10 @@ namespace MeetupWebApi.DAL.Repositories
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() =>
-            await dbSet.ToListAsync();
+            await dbSet.AsNoTracking().ToListAsync();
 
         public async Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> expression) =>
-            await dbSet.Where(expression).ToListAsync();
+            await dbSet.AsNoTracking().Where(expression).ToListAsync();
 
         public void Update(T entity)
         {
@@ -36,7 +36,7 @@ namespace MeetupWebApi.DAL.Repositories
 
         public void Delete(T entity)
         {
-            dbSet.Remove(entity);
+            dbSet.Entry(entity).State= EntityState.Deleted;
         }        
 
         public async Task SaveChangesAsync()
