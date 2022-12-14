@@ -119,5 +119,28 @@ namespace MeetupWebApi.WEB.Controllers
                 return TypedResults.BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete]
+        public async Task<Results<NotFound<string>, Ok<MeetupDto>, BadRequest<string>, Conflict<string>>> DeleteMeetupAsync(MeetupDto meetupDto)
+        {
+            try
+            {
+                var meetupDtoFromUpdate = await _service.DeleteMeetupAsync(meetupDto);
+                _logger.LogInformation("Delete request is completed successfully");
+                return TypedResults.Ok(meetupDto);
+            }
+
+            catch (NonExistentObjectException ex)
+            {
+                _logger.LogError($"{ex.Message}");
+                return TypedResults.NotFound(ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Delete request is failed");
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
     }
 }
