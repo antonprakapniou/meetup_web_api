@@ -36,9 +36,8 @@ namespace MeetupWebApi.BLL.Services
         {
             var meetupDtos = await _unitOfWork.MeetupRepository.GetAllAsync();
 
-            if (meetupDtos == null)
+            if (meetupDtos.Count()==0)
             {
-
                 string errorMessage = $"Meetup collection is empty";
                 _logger.LogDebug(errorMessage);
                 throw new NonExistentObjectException(errorMessage);
