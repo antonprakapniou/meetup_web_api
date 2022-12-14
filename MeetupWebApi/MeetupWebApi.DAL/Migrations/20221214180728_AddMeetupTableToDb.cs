@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -21,10 +22,10 @@ namespace MeetupWebApi.DAL.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Topic = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Schedule = table.Column<string>(type: "text", nullable: true),
-                    Sponsor = table.Column<string>(type: "text", nullable: true),
-                    Speaker = table.Column<string>(type: "text", nullable: true),
-                    Adress = table.Column<string>(type: "text", nullable: false),
+                    Schedule = table.Column<List<string>>(type: "text[]", nullable: true),
+                    Sponsors = table.Column<List<string>>(type: "text[]", nullable: true),
+                    Speakers = table.Column<List<string>>(type: "text[]", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: false),
                     Spending = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
