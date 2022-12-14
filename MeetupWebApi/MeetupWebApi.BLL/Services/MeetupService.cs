@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using MeetupWebApi.BLL.DTO;
 using MeetupWebApi.BLL.Exceptions;
 using MeetupWebApi.BLL.Interfaces;
@@ -67,19 +68,26 @@ namespace MeetupWebApi.BLL.Services
         //throw NonExistentObjectException if meetup doesn't exist
         public async Task<MeetupDto> CreateMeetupAsync(MeetupDto meetupDto)
         {
-            var meetupForCreate = _mapper.Map<Meetup>(meetupDto);
-            await _unitOfWork.MeetupRepository.AddAsync(meetupForCreate);
+            ValidationResult result=await _validator.ValidateAsync(meetupDto);
 
-            try
+            if (result.IsValid)
             {
-                await _unitOfWork.SaveChangesAsync();
-                _logger.LogDebug("CreateMeetupAsync operation completed successfully");
+                var meetupForCreate = _mapper.Map<Meetup>(meetupDto);
+                await _unitOfWork.MeetupRepository.AddAsync(meetupForCreate);
+
+                try
+                {
+                    await _unitOfWork.SaveChangesAsync();
+                    _logger.LogDebug("CreateMeetupAsync operation completed successfully");
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "CreateMeetupAsync operation is failed");
+                }
             }
 
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "CreateMeetupAsync operation is failed");
-            }
+            else throw new InvalidObjectException("MeetupDto model isn't valid");           
 
             return meetupDto;
         }
