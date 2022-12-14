@@ -104,19 +104,28 @@ namespace MeetupWebApi.BLL.Services
 
             else
             {
-                var meetupForUpdate = _mapper.Map<Meetup>(meetupDto);
-                _unitOfWork.MeetupRepository.Update(meetupForUpdate);
-
-                try
+                ValidationResult result = await _validator.ValidateAsync(meetupDto);
+                if (result.IsValid)
                 {
-                    await _unitOfWork.SaveChangesAsync();
-                    _logger.LogDebug("UpdateMeetupAsync operation completed successfully");
+                    var meetupForUpdate = _mapper.Map<Meetup>(meetupDto);
+                    _unitOfWork.MeetupRepository.Update(meetupForUpdate);
+
+                    try
+                    {
+                        await _unitOfWork.SaveChangesAsync();
+                        _logger.LogDebug("UpdateMeetupAsync operation completed successfully");
+                    }
+
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "UpdateMeetupAsync operation is failed");
+                    }
                 }
 
-                catch (Exception ex)
+                else
                 {
-                    _logger.LogError(ex, "UpdateMeetupAsync operation is failed");
-                }
+                    throw new InvalidObjectException("MeetupDto model isn't valid");
+                }                
             }
 
             return meetupDto;
