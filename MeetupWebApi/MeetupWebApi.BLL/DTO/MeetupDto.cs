@@ -9,7 +9,7 @@
         public string? Schedule { get; set; }
         public string? Sponsor { get; set; }
         public string? Speaker { get; set; }
-        public string? Adress { get; set; }
+        public string? Address { get; set; }
 
         //use converting to Utc for work with PostgreSQL 
         public DateTime? Spending { get; set; }

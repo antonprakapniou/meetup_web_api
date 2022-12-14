@@ -9,7 +9,7 @@ namespace MeetupWebApi.BLL.Validation
         {
             RuleFor(x => x.Name).NotEmpty().NotNull().WithMessage("required");
             RuleFor(x => x.Topic).NotEmpty().NotNull().WithMessage("required");
-            RuleFor(x => x.Adress).NotEmpty().NotNull().WithMessage("required");
+            RuleFor(x => x.Address).NotEmpty().NotNull().WithMessage("required");
             RuleFor(x => x.Spending).NotEmpty().NotNull().WithMessage("required");
         }
     }
