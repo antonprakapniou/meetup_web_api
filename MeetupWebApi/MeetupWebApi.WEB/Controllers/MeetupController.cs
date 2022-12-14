@@ -66,5 +66,28 @@ namespace MeetupWebApi.WEB.Controllers
                 return TypedResults.BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<Results<Created<MeetupDto>, Ok<MeetupDto>, BadRequest<string>,Conflict<string>>> PostMeetupAsync(MeetupDto meetupDto)
+        {
+            try
+            {
+                MeetupDto meetupDtoFromCreate = await _service.CreateMeetupAsync(meetupDto);
+                var location = Url.Action(nameof(GetMeetupAsyncById), new { id = meetupDtoFromCreate.Id }) ?? $"/{meetupDtoFromCreate.Id}";
+                return TypedResults.Created(location, meetupDtoFromCreate);
+            }
+
+            catch (InvalidObjectException ex)
+            {
+                _logger.LogError($"{ex.Message}");
+                return TypedResults.Conflict(ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Post request is failed");
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
     }
 }
