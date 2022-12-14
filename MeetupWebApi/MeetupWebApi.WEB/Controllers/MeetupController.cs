@@ -43,6 +43,28 @@ namespace MeetupWebApi.WEB.Controllers
                 return TypedResults.BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpGet("{id}")]
+        public async Task<Results<NotFound<string>, Ok<MeetupDto>, BadRequest<string>>> GetMeetupAsyncById(int id)
+        {
+            try
+            {
+                var meetupDto = await _service.GetMeetupByIdAsync(id);
+                _logger.LogInformation("Get request is completed successfully");
+                return TypedResults.Ok(meetupDto);
+            }
+
+            catch (NonExistentObjectException ex)
+            {
+                _logger.LogError($"{ex.Message}");
+                return TypedResults.NotFound(ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Get request is failed");
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
     }
 }
