@@ -1,5 +1,6 @@
 ﻿using MeetupWebApi.DAL.EF;
 using MeetupWebApi.DAL.Interfaces;
+using MeetupWebApi.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -41,6 +42,6 @@ namespace MeetupWebApi.DAL.Repositories
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
-        }
+        }        
     }
 }

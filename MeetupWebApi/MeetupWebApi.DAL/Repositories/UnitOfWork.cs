@@ -25,7 +25,7 @@ namespace MeetupWebApi.DAL.Repositories
 
                 return _meetupRepository;
             }
-        }
+        }        
 
         public async Task SaveChangesAsync()
         {

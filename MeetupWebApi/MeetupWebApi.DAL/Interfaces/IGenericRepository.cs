@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using MeetupWebApi.DAL.Models;
+using System.Linq.Expressions;
 
 namespace MeetupWebApi.DAL.Interfaces
 {

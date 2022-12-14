@@ -7,6 +7,8 @@ using MeetupWebApi.WEB.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Serilog;
+using MeetupWebApi.BLL.Interfaces;
+using MeetupWebApi.BLL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -29,14 +31,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddAutoMapper(typeof(MeetupAutoMapperProfile));
-builder.Services.AddTransient<IMeetupRepository, MeetupRepository>();
+builder.Services.AddScoped<IMeetupService, MeetupService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IMeetupRepository, MeetupRepository>();
 builder.Services.AddValidatorsFromAssemblyContaining<MeetupDto>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 var app = builder.Build();
 
