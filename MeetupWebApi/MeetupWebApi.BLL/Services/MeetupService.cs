@@ -39,7 +39,7 @@ namespace MeetupWebApi.BLL.Services
             if (meetupDtos == null)
             {
                 _logger.LogDebug("MeetupDto collection is empty");
-                throw new NullReturnableException($"GetMeetupAsync return null");
+                throw new NonExistentObjectException($"GetMeetupAsync return null");
             }
 
             return _mapper.Map<IEnumerable<MeetupDto>>(meetupDtos);
