@@ -72,8 +72,9 @@ namespace MeetupWebApi.WEB.Controllers
         {
             try
             {
-                MeetupDto meetupDtoFromCreate = await _service.CreateMeetupAsync(meetupDto);
+                var meetupDtoFromCreate = await _service.CreateMeetupAsync(meetupDto);
                 var location = Url.Action(nameof(GetMeetupAsyncById), new { id = meetupDtoFromCreate.Id }) ?? $"/{meetupDtoFromCreate.Id}";
+                _logger.LogInformation("Post request is completed successfully");
                 return TypedResults.Created(location, meetupDtoFromCreate);
             }
 
@@ -86,6 +87,35 @@ namespace MeetupWebApi.WEB.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Post request is failed");
+                return TypedResults.BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public async Task<Results<NotFound<string>, Ok<MeetupDto>, BadRequest<string>, Conflict<string>>> PutMeetupAsync(MeetupDto meetupDto)
+        {
+            try
+            {
+                var meetupDtoFromUpdate = await _service.UpdateMeetupAsync(meetupDto);
+                _logger.LogInformation("Put request is completed successfully");
+                return TypedResults.Ok(meetupDto);
+            }
+
+            catch (InvalidObjectException ex)
+            {
+                _logger.LogError($"{ex.Message}");
+                return TypedResults.Conflict(ex.Message);
+            }
+
+            catch (NonExistentObjectException ex)
+            {
+                _logger.LogError($"{ex.Message}");
+                return TypedResults.NotFound(ex.Message);
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Put request is failed");
                 return TypedResults.BadRequest(ex.Message);
             }
         }
