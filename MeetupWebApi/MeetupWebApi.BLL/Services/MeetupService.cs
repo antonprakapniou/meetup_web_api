@@ -31,15 +31,17 @@ namespace MeetupWebApi.BLL.Services
         }
 
         //possible null returning
-        //throw NullReturnableException if meetup list is empty
+        //throw NonExistentObjectException if meetup list is empty
         public async Task<IEnumerable<MeetupDto>> GetMeetupsAsync()
         {
             var meetupDtos = await _unitOfWork.MeetupRepository.GetAllAsync();
 
             if (meetupDtos == null)
             {
-                _logger.LogDebug("MeetupDto collection is empty");
-                throw new NonExistentObjectException($"GetMeetupAsync return null");
+
+                string errorMessage = $"Meetup collection is empty";
+                _logger.LogDebug(errorMessage);
+                throw new NonExistentObjectException(errorMessage);
             }
 
             return _mapper.Map<IEnumerable<MeetupDto>>(meetupDtos);
