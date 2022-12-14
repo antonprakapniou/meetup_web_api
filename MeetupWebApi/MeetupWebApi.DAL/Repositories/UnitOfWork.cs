@@ -9,7 +9,7 @@ namespace MeetupWebApi.DAL.Repositories
     {
         private readonly AppDbContext _context;
 
-        private MeetupRepository _meetupRepository;
+        private MeetupRepository? _meetupRepository;
 
         public UnitOfWork(AppDbContext context)
         {
