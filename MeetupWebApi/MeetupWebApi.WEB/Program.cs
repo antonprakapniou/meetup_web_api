@@ -9,6 +9,7 @@ using FluentValidation;
 using Serilog;
 using MeetupWebApi.BLL.Interfaces;
 using MeetupWebApi.BLL.Services;
+using MeetupWebApi.DAL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -34,12 +35,25 @@ builder.Services.AddAutoMapper(typeof(MeetupAutoMapperProfile));
 builder.Services.AddTransient<IMeetupService, MeetupService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddValidatorsFromAssemblyContaining<MeetupDto>();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        SeedData.Initialize(services);
+    }
+
+    catch(Exception ex) 
+    {
+        logger.Error(ex,"db not found");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
