@@ -22,7 +22,7 @@ namespace MeetupWebApi.WEB.Controllers
             _service= service;
             _logger= logger;
         }
-
+        
         [HttpGet]
         public async Task<Results<NotFound<string>, Ok<IEnumerable<MeetupDto>>, BadRequest<string>>> GetAllAsync()
         {
