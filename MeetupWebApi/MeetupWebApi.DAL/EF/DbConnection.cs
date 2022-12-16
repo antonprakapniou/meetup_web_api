@@ -1,8 +1,8 @@
 ﻿namespace MeetupWebApi.DAL.EF
 {
     //use to choice db connection according to configuration file
-    public static class Connection
+    public static class DbConnection
     {
-        public const string defaultConnection= "DefaultConnection";
+        public const string defaultConnection = "DefaultConnection";
     }
 }

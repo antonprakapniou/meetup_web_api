@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MeetupWebApi.BLL": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:56019;http://localhost:56022"
+    }
+  }
+}

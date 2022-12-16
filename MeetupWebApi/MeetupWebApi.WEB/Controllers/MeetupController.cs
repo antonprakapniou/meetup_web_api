@@ -1,6 +1,7 @@
 ﻿using MeetupWebApi.BLL.DTO;
 using MeetupWebApi.BLL.Exceptions;
 using MeetupWebApi.BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace MeetupWebApi.WEB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MeetupController:ControllerBase
     {
         private readonly IMeetupService _service;

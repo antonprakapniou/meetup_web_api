@@ -13,7 +13,6 @@ namespace MeetupWebApi.DAL.Services
                 serviceProvider.GetRequiredService<
                     DbContextOptions<AppDbContext>>()))
             {
-                // Look for any movies.
                 if (context.Meetups.Any())
                 {
                     return;   // DB has been seeded

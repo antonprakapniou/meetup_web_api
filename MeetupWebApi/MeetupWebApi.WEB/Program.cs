@@ -10,6 +10,8 @@ using Serilog;
 using MeetupWebApi.BLL.Interfaces;
 using MeetupWebApi.BLL.Services;
 using MeetupWebApi.DAL.Services;
+using IdentityServer4.AccessTokenValidation;
+using MeetupWebApi.WEB.IdentityServer;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -20,9 +22,9 @@ var logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
-string connectionName = Connection.defaultConnection;
-string connectionString = builder
-    .Configuration
+var builderConfiguration = builder.Configuration;
+string connectionName = DbConnection.defaultConnection;
+string connectionString = builderConfiguration
     .GetConnectionString(connectionName)
     ??throw new InvalidDbConnectionException($"Connection \"{connectionName}\" not found.");
 
@@ -38,6 +40,18 @@ builder.Services.AddValidatorsFromAssemblyContaining<MeetupDto>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//IdentityServerAuthenticationDefaults.AuthenticationScheme="Bearer"
+builder.Services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+    .AddIdentityServerAuthentication(options =>
+    {
+        //the URL on which the IdentityServer is up and running
+        options.Authority=builderConfiguration.GetValue<string>(IdentityServerConnection.Authority);
+        //the name of the WebAPI resource
+        options.ApiName=builderConfiguration.GetValue<string>(IdentityServerConnection.ApiName);
+        //select false for the development
+        options.RequireHttpsMetadata= builderConfiguration.GetValue<bool>(IdentityServerConnection.RequireHttpsMetadata);
+    });
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -51,7 +65,7 @@ using (var scope = app.Services.CreateScope())
 
     catch(Exception ex) 
     {
-        logger.Error(ex,"db not found");
+        logger.Error(ex,"Db not found");
     }
 }
 
@@ -63,6 +77,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

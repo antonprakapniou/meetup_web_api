@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupWebApi.WEB", "MeetupWebApi.WEB\MeetupWebApi.WEB.csproj", "{C27E94A0-362A-4AE4-9391-9CAB475A72C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeetupWebApi.WEB", "MeetupWebApi.WEB\MeetupWebApi.WEB.csproj", "{C27E94A0-362A-4AE4-9391-9CAB475A72C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupWebApi.BLL", "MeetupWebApi.BLL\MeetupWebApi.BLL.csproj", "{7E22158B-56D4-4D93-8119-F5ACDF628E9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeetupWebApi.BLL", "MeetupWebApi.BLL\MeetupWebApi.BLL.csproj", "{7E22158B-56D4-4D93-8119-F5ACDF628E9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeetupWebApi.DAL", "MeetupWebApi.DAL\MeetupWebApi.DAL.csproj", "{F34B8409-6491-4297-A825-E58F87F797B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeetupWebApi.DAL", "MeetupWebApi.DAL\MeetupWebApi.DAL.csproj", "{F34B8409-6491-4297-A825-E58F87F797B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
