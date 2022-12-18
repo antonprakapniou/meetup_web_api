@@ -1,7 +1,6 @@
 ﻿using MeetupWebApi.BLL.DTO;
 using MeetupWebApi.BLL.Exceptions;
 using MeetupWebApi.BLL.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +8,7 @@ namespace MeetupWebApi.WEB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class MeetupController:ControllerBase
     {
         private readonly IMeetupService _service;
@@ -70,12 +69,14 @@ namespace MeetupWebApi.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<Results<Created<MeetupDto>, Ok<MeetupDto>, BadRequest<string>,Conflict<string>>> PostMeetupAsync(MeetupDto meetupDto)
+        public async Task<Results<Created<MeetupDto>, Ok<MeetupDto>, BadRequest<string>>> PostMeetupAsync(MeetupDto meetupDto)
+
         {
             try
             {
                 var meetupDtoFromCreate = await _service.CreateMeetupAsync(meetupDto);
-                var location = Url.Action(nameof(GetMeetupAsyncById), new { id = meetupDtoFromCreate.Id }) ?? $"/{meetupDtoFromCreate.Id}";
+                var location = Url.Action(nameof(GetMeetupAsyncById), new { id = meetupDtoFromCreate.Id }) 
+                    ?? $"/{meetupDtoFromCreate.Id}";
                 _logger.LogInformation("Post request is completed successfully");
                 return TypedResults.Created(location, meetupDtoFromCreate);
             }
@@ -83,7 +84,7 @@ namespace MeetupWebApi.WEB.Controllers
             catch (InvalidObjectException ex)
             {
                 _logger.LogError($"{ex.Message}");
-                return TypedResults.Conflict(ex.Message);
+                return TypedResults.BadRequest(ex.Message);
             }
 
             catch (Exception ex)
@@ -94,7 +95,7 @@ namespace MeetupWebApi.WEB.Controllers
         }
 
         [HttpPut]
-        public async Task<Results<NotFound<string>, Ok<MeetupDto>, BadRequest<string>, Conflict<string>>> PutMeetupAsync(MeetupDto meetupDto)
+        public async Task<Results<NotFound<string>, Ok<MeetupDto>, BadRequest<string>>> PutMeetupAsync(MeetupDto meetupDto)
         {
             try
             {
@@ -106,7 +107,7 @@ namespace MeetupWebApi.WEB.Controllers
             catch (InvalidObjectException ex)
             {
                 _logger.LogError($"{ex.Message}");
-                return TypedResults.Conflict(ex.Message);
+                return TypedResults.BadRequest(ex.Message);
             }
 
             catch (NonExistentObjectException ex)

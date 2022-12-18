@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MeetupWebApi.DAL.Services
-{
+{    
     public static class SeedData
     {
         public static void Initialize(IServiceProvider serviceProvider)
