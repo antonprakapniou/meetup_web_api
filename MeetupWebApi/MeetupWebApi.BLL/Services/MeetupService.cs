@@ -33,7 +33,7 @@ namespace MeetupWebApi.BLL.Services
         //throw NonExistentObjectException if meetup list is empty or null
         public async Task<IEnumerable<MeetupDto>> GetMeetupsAsync()
         {
-            var meetupDtos = await _unitOfWork.MeetupRepository.GetAllAsync();
+            var meetupDtos = await _unitOfWork.Meetup.GetAllAsync();
 
             if (meetupDtos.Count()==0)
             {
@@ -49,7 +49,7 @@ namespace MeetupWebApi.BLL.Services
         public async Task<MeetupDto> GetMeetupByIdAsync(int id)
         {
             var meetups = await _unitOfWork
-                .MeetupRepository
+                .Meetup
                 .GetByAsync(u => u.Id==id);
 
             MeetupDto meetupDto = _mapper.Map<MeetupDto>(meetups.FirstOrDefault());
@@ -73,7 +73,7 @@ namespace MeetupWebApi.BLL.Services
             if (result.IsValid)
             {
                 var meetupForCreate = _mapper.Map<Meetup>(meetupDto);
-                await _unitOfWork.MeetupRepository.AddAsync(meetupForCreate);
+                await _unitOfWork.Meetup.AddAsync(meetupForCreate);
 
                 try
                 {
@@ -97,7 +97,7 @@ namespace MeetupWebApi.BLL.Services
         public async Task<MeetupDto> UpdateMeetupAsync(MeetupDto meetupDto)
         {
             var meetupForUpdate = _mapper.Map<Meetup>(meetupDto);
-            var meetups = await _unitOfWork.MeetupRepository.GetByAsync(m => m.Id==meetupForUpdate.Id);
+            var meetups = await _unitOfWork.Meetup.GetByAsync(m => m.Id==meetupForUpdate.Id);
 
             if (meetups.Count()==0)
             {
@@ -111,7 +111,7 @@ namespace MeetupWebApi.BLL.Services
                 ValidationResult result = await _validator.ValidateAsync(meetupDto);
                 if (result.IsValid)
                 {                   
-                    _unitOfWork.MeetupRepository.Update(meetupForUpdate);
+                    _unitOfWork.Meetup.Update(meetupForUpdate);
 
                     try
                     {
@@ -138,7 +138,7 @@ namespace MeetupWebApi.BLL.Services
         public async Task<MeetupDto> DeleteMeetupAsync(MeetupDto meetupDto)
         {
             var meetupForDelete = _mapper.Map<Meetup>(meetupDto);
-            var meetups = await _unitOfWork.MeetupRepository.GetByAsync(m => m.Id==meetupForDelete.Id);
+            var meetups = await _unitOfWork.Meetup.GetByAsync(m => m.Id==meetupForDelete.Id);
 
             if (meetups.Count()==0)
             {
@@ -149,7 +149,7 @@ namespace MeetupWebApi.BLL.Services
 
             else
             {
-                _unitOfWork.MeetupRepository.Delete(meetupForDelete);
+                _unitOfWork.Meetup.Delete(meetupForDelete);
 
                 try
                 {

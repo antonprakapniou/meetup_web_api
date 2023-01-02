@@ -1,10 +1,8 @@
-﻿using MeetupWebApi.DAL.Models;
-
-namespace MeetupWebApi.DAL.Interfaces
+﻿namespace MeetupWebApi.DAL.Interfaces
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork
     {
-        public IGenericRepository<Meetup> MeetupRepository { get; }
+        public IMeetupRepository Meetup { get; }
         public Task SaveChangesAsync();
     }
 }
