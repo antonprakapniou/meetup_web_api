@@ -35,7 +35,7 @@ namespace MeetupWebApi.BLL.Services
         {
             var meetupDtos = await _unitOfWork.Meetup.GetAllAsync();
 
-            if (meetupDtos.Count()==0)
+            if (meetupDtos.Count()==0||meetupDtos==null)
             {
                 string errorMessage = $"No objects found";
                 _logger.LogDebug(errorMessage);
